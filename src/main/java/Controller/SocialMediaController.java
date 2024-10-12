@@ -45,14 +45,21 @@ public class SocialMediaController {
         ctx.json(messages);
     }
 
-    private void postAccountHandler(Context ctx) {
+    private void postAccountHandler(Context ctx) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Account account = mapper.readValue(ctx.body(), Account.class);
-        Account addedAccount = accountService.addAccount(account);
-        if(addedAccount!=null){
-            ctx.json(mapper.writeValueAsString(addedAccount));
-        }else{
+        String use = account.getUsername();
+        String pass = account.getPassword();
+        if(use == null || pass == null || use.isEmpty() || use.equals(" ")){
             ctx.status(400);
+        }
+        else{
+            Account addedAccount = accountService.addAccount(account);
+            if(addedAccount!=null){
+                ctx.json(mapper.writeValueAsString(addedAccount));
+            }else{
+                ctx.status(400);
+            }
         }
     }
 
