@@ -35,6 +35,7 @@ public class SocialMediaController {
     public Javalin startAPI() {
         Javalin app = Javalin.create();
         app.get("messages", this::getAllMessagesHandler);
+        app.post("register", this::postAccountHandler);
 
         return app;
     }
@@ -42,6 +43,17 @@ public class SocialMediaController {
     private void getAllMessagesHandler(Context ctx) {
         List<Message> messages = messageService.getAllMessages();
         ctx.json(messages);
+    }
+
+    private void postAccountHandler(Context ctx) {
+        ObjectMapper mapper = new ObjectMapper();
+        Account account = mapper.readValue(ctx.body(), Account.class);
+        Account addedAccount = accountService.addAccount(account);
+        if(addedAccount!=null){
+            ctx.json(mapper.writeValueAsString(addedAccount));
+        }else{
+            ctx.status(400);
+        }
     }
 
 

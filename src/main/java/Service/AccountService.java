@@ -20,5 +20,10 @@ public class AccountService {
         return accountDAO.getAllAccounts();
     }
 
+    //add account
+    public Account addAccount(Account account){
+        return accountDAO.addAccount(account);
+        
+    }
 
 }
