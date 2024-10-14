@@ -52,6 +52,11 @@ public class SocialMediaController {
         String pass = account.getPassword();
         if(use == null || pass == null || use.isEmpty() || use.equals(" ")){
             ctx.status(400);
+            return;
+        }
+        if(pass.length() < 4){
+            ctx.status(400);
+            return;
         }
         else{
             Account addedAccount = accountService.addAccount(account);
