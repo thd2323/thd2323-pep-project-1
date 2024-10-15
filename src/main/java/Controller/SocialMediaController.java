@@ -36,6 +36,7 @@ public class SocialMediaController {
         Javalin app = Javalin.create();
         app.get("messages", this::getAllMessagesHandler);
         app.post("register", this::postAccountHandler);
+        app.post("messages", this::postMessageHandler);
 
         return app;
     }
@@ -66,6 +67,30 @@ public class SocialMediaController {
                 ctx.status(400);
             }
         }
+    }
+
+    private void postMessageHandler(Context ctx) throws JsonProcessingException {
+        System.out.println("default message");//delete this
+        ObjectMapper mapper = new ObjectMapper();
+        Message message = mapper.readValue(ctx.body(), Message.class);
+        String text = message.getMessage_text();
+        
+        
+        if(text == null || text.isEmpty() || text.length() > 255 || text.equals(" ")){//need to check if user is legit
+            System.out.println("it was triggered");//delete this
+            ctx.status(400);
+            return;
+        }
+       
+        
+        
+            Message addedMessage = messageService.addMessage(message);
+            if(addedMessage!=null){
+                ctx.json(mapper.writeValueAsString(addedMessage));
+            }else{
+                ctx.status(400);
+            }
+        
     }
 
 
