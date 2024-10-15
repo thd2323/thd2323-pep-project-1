@@ -29,6 +29,57 @@ public class MessageDAO {
         return messages;
     }
 
+    public Message getMessage(Message message){
+        
+        Connection connection = ConnectionUtil.getConnection();
+        
+        try {
+            //Write SQL logic here
+            String sql = "Select FROM message (message_id, posted_by, message_text, time_posted_epoch) VALUES (?, ?, ?, ?)";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1, message.getMessage_id());
+            preparedStatement.setInt(2, message.getPosted_by());
+            preparedStatement.setString(3, message.getMessage_text());
+            preparedStatement.setLong(3, message.getTime_posted_epoch());
+            ResultSet rs = preparedStatement.executeQuery();
+            while(rs.next()){
+                Message message2 = new Message(rs.getInt("message_id"), rs.getInt("posted_by"),
+                        rs.getString("message_text"), rs.getLong("time_posted_epoch"));
+                        return message2;
+            }
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public Message deleteMessage(Message message){
+        Connection connection = ConnectionUtil.getConnection();
+        if(this.getMessage(message) == null){
+            return null;
+        }
+        try {
+            
+            String sql = "DELETE FROM message (message_id, posted_by, message_text, time_posted_epoch) VALUES (?, ?, ?, ?)" ;
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+            //write preparedStatement's setString and setInt methods here.
+            preparedStatement.setInt(1, message.getMessage_id());
+            preparedStatement.setInt(2, message.getPosted_by());
+            preparedStatement.setString(3, message.getMessage_text());
+            preparedStatement.setLong(3, message.getTime_posted_epoch());
+
+            preparedStatement.executeUpdate();
+          
+                return message;
+            
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
     public Message addMessage(Message message){
         
         Connection connection = ConnectionUtil.getConnection();

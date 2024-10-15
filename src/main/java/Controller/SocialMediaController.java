@@ -37,8 +37,19 @@ public class SocialMediaController {
         app.get("messages", this::getAllMessagesHandler);
         app.post("register", this::postAccountHandler);
         app.post("messages", this::postMessageHandler);
-
+        app.delete("messages", this::deleteMessageHandler);
         return app;
+    }
+
+    private void deleteMessageHandler(Context ctx) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Message message = mapper.readValue(ctx.body(), Message.class);
+        Message removedMessage = messageService.deleteMessage(message);
+        if(removedMessage == null){
+            ctx.status(400);
+            return;
+        }
+        ctx.json(message);
     }
 
     private void getAllMessagesHandler(Context ctx) {

@@ -26,43 +26,16 @@ import io.javalin.Javalin;
  */
 public class Main {
     public static void main(String[] args) {
-        System.out.println("default message");//delete this
-        try{
-        SocialMediaController socialMediaController;
-        HttpClient webClient;
-        ObjectMapper objectMapper;
-        
-
-
-        ConnectionUtil.resetTestDatabase();
-        
-        
-        webClient = HttpClient.newHttpClient();
-        objectMapper = new ObjectMapper();
-        
-        Thread.sleep(1000);
-        }
-        catch(InterruptedException e){
-            System.out.println("something went wrong");
-        }
         
         
         
-        System.out.println("default message");//delete this
+        
+        
         SocialMediaController controller = new SocialMediaController();
         Javalin app = controller.startAPI();
         app.start(8080);
         //delete this
-        HttpRequest postMessageRequest = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/messages"))
-                .POST(HttpRequest.BodyPublishers.ofString("{"+
-                        "\"posted_by\":1, " +
-                        "\"message_text\": \"hello message\", " +
-                        "\"time_posted_epoch\": 1669947792}"))
-                .header("Content-Type", "application/json")
-                .build();
-        HttpResponse response = webClient.send(postMessageRequest, HttpResponse.BodyHandlers.ofString());
-        int status = response.statusCode();
+        
 
 
         //delete this

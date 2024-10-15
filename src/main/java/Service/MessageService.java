@@ -25,4 +25,8 @@ public class MessageService {
         return messageDAO.addMessage(message);
     }
 
+    public Message deleteMessage(Message message){
+        return messageDAO.deleteMessage(message);
+    }
+
 }
