@@ -21,12 +21,24 @@ public class MessageService {
         return messageDAO.getAllMessages();
     }
 
+    public Message updateMessageID(Message message) {
+        if(messageDAO.getMessageID(message.getMessage_id()) == null){
+            return null;
+        }
+        messageDAO.updateMessageID(message);
+        return messageDAO.getMessageID(message.getMessage_id());
+    }
+
     public Message addMessage(Message message){
         return messageDAO.addMessage(message);
     }
 
     public Message deleteMessage(Message message){
         return messageDAO.deleteMessage(message);
+    }
+
+    public Message getMessageID(int i){
+        return messageDAO.getMessageID(i);
     }
 
 }

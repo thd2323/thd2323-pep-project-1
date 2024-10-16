@@ -37,8 +37,44 @@ public class SocialMediaController {
         app.get("messages", this::getAllMessagesHandler);
         app.post("register", this::postAccountHandler);
         app.post("messages", this::postMessageHandler);
-        app.delete("messages", this::deleteMessageHandler);
+        app.delete("messages/{message_id}", this::deleteMessageHandler);
+        app.get("messages/{message_id}", this::getMessageID);
+        app.patch("messages/{message_id}", this::updateMessageID);
         return app;
+    }
+
+    private void updateMessageID(Context ctx) throws JsonProcessingException {
+        
+        
+        ObjectMapper mapper = new ObjectMapper();
+        Message message = mapper.readValue(ctx.body(), Message.class);
+        //String text = Integer.parseString(ctx.pathParam("message_text"));
+        String text = message.getMessage_text();
+        System.out.println("text is " + text);
+        Message message2 = messageService.updateMessageID(message);
+        if(text.isBlank() || text.isEmpty() || text.equals(null) || text.length() > 255){
+            ctx.status(400);
+            return;
+        }
+        else{
+        //ctx.status(200);
+        ctx.json(message2);
+        }
+    }
+
+    private void getMessageID(Context ctx) throws JsonProcessingException {//grabs a messge by its id
+        ObjectMapper mapper = new ObjectMapper();
+        //Message message = mapper.readValue(ctx.body(), Integer.class);
+        int message_id = Integer.parseInt(ctx.pathParam("message_id"));
+        Message message = messageService.getMessageID(message_id);
+        if(message == null){
+            ctx.status(200);
+            return;
+        }
+        else{
+        ctx.status(200);
+        ctx.json(message);
+        }
     }
 
     private void deleteMessageHandler(Context ctx) throws JsonProcessingException {
