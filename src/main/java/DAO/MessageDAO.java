@@ -56,10 +56,10 @@ public class MessageDAO {
 
     public Message getMessageID(int i){
         Connection connection = ConnectionUtil.getConnection();
-        
+        System.out.println("getMessageID trying find message by id " + i);
         try {
             //Write SQL logic here
-            String sql = "Select FROM message WHERE message_id = ?";
+            String sql = "Select * FROM message WHERE message_id = ?";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, i);
@@ -73,10 +73,11 @@ public class MessageDAO {
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }
+        System.out.println("find message by id returned null");
         return null;
     }
 
-    public void updateMessageID(Message message){
+    public void updateMessageID(int id, String text){
         Connection connection = ConnectionUtil.getConnection();
         
         try {
@@ -84,8 +85,8 @@ public class MessageDAO {
             String sql = "UPDATE message SET message_text = ? WHERE message_id = ?";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, message.getMessage_text());
-            preparedStatement.setInt(2, message.getMessage_id());
+            preparedStatement.setString(1, text);
+            preparedStatement.setInt(2, id);
             preparedStatement.executeUpdate();
            
         }catch(SQLException e){

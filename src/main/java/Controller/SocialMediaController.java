@@ -48,15 +48,21 @@ public class SocialMediaController {
         
         ObjectMapper mapper = new ObjectMapper();
         Message message = mapper.readValue(ctx.body(), Message.class);
-        //String text = Integer.parseString(ctx.pathParam("message_text"));
+        System.out.println("test message");
+        int id = Integer.parseInt(ctx.pathParam("message_id"));
+        
+        
+        System.out.println("id is " + id);
         String text = message.getMessage_text();
         System.out.println("text is " + text);
-        Message message2 = messageService.updateMessageID(message);
-        if(text.isBlank() || text.isEmpty() || text.equals(null) || text.length() > 255){
+        
+        Message message2 = messageService.updateMessageID(id, text);
+        if(text.isBlank() || text.isEmpty() || text.equals(null) || text.length() > 255 || message2 == null){
             ctx.status(400);
             return;
         }
         else{
+            
         //ctx.status(200);
         ctx.json(message2);
         }
