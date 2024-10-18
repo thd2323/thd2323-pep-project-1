@@ -73,7 +73,7 @@ public class MessageDAO {
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }
-        System.out.println("find message by id returned null");
+        System.out.println("get message by id returned null");
         return null;
     }
 
@@ -94,12 +94,10 @@ public class MessageDAO {
         }
         
     }
-
-    public Message deleteMessage(Message message){
+    /* 
+    public Message deleteMessage(int id){
         Connection connection = ConnectionUtil.getConnection();
-        if(this.getMessage(message) == null){
-            return null;
-        }
+        
         try {
             
             String sql = "DELETE FROM message (message_id, posted_by, message_text, time_posted_epoch) VALUES (?, ?, ?, ?)" ;
@@ -119,6 +117,30 @@ public class MessageDAO {
             System.out.println(e.getMessage());
         }
         return null;
+    }
+    */
+
+    public void deleteMessageID(int id){
+        System.out.println("deleting method begun id is " + id);
+        Connection connection = ConnectionUtil.getConnection();
+        
+        try {
+            
+            String sql = "DELETE FROM message WHERE message_id = ?" ;
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+            //write preparedStatement's setString and setInt methods here.
+            preparedStatement.setInt(1, id);
+            
+
+            preparedStatement.executeUpdate();
+          
+               
+            
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+      
     }
 
     public Message addMessage(Message message){

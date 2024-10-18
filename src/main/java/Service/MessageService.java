@@ -23,6 +23,7 @@ public class MessageService {
 
     public Message updateMessageID(int id, String text) {
         if(messageDAO.getMessageID(id) == null){
+            System.out.println("message service returning null");
             return null;
         }
         messageDAO.updateMessageID(id, text);
@@ -33,8 +34,13 @@ public class MessageService {
         return messageDAO.addMessage(message);
     }
 
-    public Message deleteMessage(Message message){
-        return messageDAO.deleteMessage(message);
+    public Message deleteMessage(int id){
+        Message m = messageDAO.getMessageID(id);
+        if(m == null){
+            return null;
+        }
+        messageDAO.deleteMessageID(id);
+        return m;
     }
 
     public Message getMessageID(int i){
