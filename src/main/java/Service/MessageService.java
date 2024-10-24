@@ -21,6 +21,10 @@ public class MessageService {
         return messageDAO.getAllMessages();
     }
 
+    public List<Message> getAllMessagesID(int id) {
+        return messageDAO.getAllMessagesID(id);
+    }
+
     public Message updateMessageID(int id, String text) {
         if(messageDAO.getMessageID(id) == null){
             System.out.println("message service returning null");
